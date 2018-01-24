@@ -2,5 +2,7 @@ package ir.maktab.pharmacy.drugInsuranceDAO;
 
 public interface DrugInsuranceDAO {
 
-	public int getInsuranceShare();
+	public void addInsuranceShare(int drugID, int insuranceID);
+	public int getInsuranceShare(String drugName, String insuranceName);
+	
 }
