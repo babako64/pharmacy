@@ -5,12 +5,14 @@ public class Patient {
 	private int id;
 	private String pationtName;
 	private int insuranceNumber;
+	private int insuranceID;
 	
-	public Patient(int id, String pationtName, int insuranceNumber) {
+	public Patient(int id, String pationtName, int insuranceNumber,int insuranceID) {
 		super();
 		this.id = id;
 		this.pationtName = pationtName;
 		this.insuranceNumber = insuranceNumber;
+		this.insuranceID = insuranceID;
 	}
 
 	public int getId() {
@@ -35,6 +37,14 @@ public class Patient {
 
 	public void setInsuranceNumber(int insuranceNumber) {
 		this.insuranceNumber = insuranceNumber;
+	}
+
+	public int getInsuranceID() {
+		return insuranceID;
+	}
+
+	public void setInsuranceID(int insuranceID) {
+		this.insuranceID = insuranceID;
 	}
 	
 	
