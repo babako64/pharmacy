@@ -1,4 +1,4 @@
-package drupPrescriptionDAO;
+package ir.maktab.pharmacy.drupPrescriptionDAO;
 
 public interface DrugPerscriptionDAO {
 

@@ -5,5 +5,5 @@ import ir.maktab.pharmacy.insuranceModel.Insurance;
 public interface InsuranceDAO {
 
 	public void addInsuranse(Insurance obj);
-	public int getInsurance();
+	public Insurance getInsurance(int id);
 }

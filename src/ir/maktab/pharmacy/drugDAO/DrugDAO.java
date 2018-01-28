@@ -9,9 +9,8 @@ public interface DrugDAO {
 	public void addDrug(Drug drug);
 	public ArrayList<Drug> getAll();
 	public Drug getDrug(String drugName);
-	public void updatePrice();
+	public void updatePrice(int id, double price);
 	public int getCount();
-	public void updateCount();
-	
+	public void updateStock(int id, int count);
 	
 }

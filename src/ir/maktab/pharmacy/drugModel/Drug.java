@@ -18,6 +18,9 @@ public class Drug {
 		this.price = price;
 	}
 
+	public Drug() {
+		
+	}
 
 	public int getId() {
 		return id;
