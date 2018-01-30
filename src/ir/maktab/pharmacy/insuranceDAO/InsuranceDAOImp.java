@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
@@ -56,7 +57,7 @@ public class InsuranceDAOImp implements InsuranceDAO{
 					+ insur.getInsuranceCode() + "')";
 			}else {
 				
-				sql = "INSERT INTO insurance (id,name,stock,expire_date,price) " + "VALUES('" + insur.getId() + "','" + insur.getName() + "','"
+				sql = "INSERT INTO insurance (id,name,insurance_code) " + "VALUES('" + insur.getId() + "','" + insur.getName() + "','"
 						+ insur.getInsuranceCode() + "')";
 			}
 			stmt.executeUpdate(sql);
@@ -124,6 +125,101 @@ public class InsuranceDAOImp implements InsuranceDAO{
 		}
 
 		return insure;
+	}
+
+	@Override
+	public ArrayList<Insurance> getall() {
+		ArrayList<Insurance> insList = new ArrayList<>();
+		int id;
+		String name = null;
+		int insuranceCode;
+		
+		try {
+			Class.forName(JDBC_DRIVER);
+
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			stmt = conn.createStatement();
+
+			String sql = "SELECT * FROM insurance ";
+
+			ResultSet rs = stmt.executeQuery(sql);
+
+			while (rs.next()) {
+
+				id = rs.getInt("id");
+				name = rs.getString("name");
+				insuranceCode = rs.getInt("insurance_code");
+				Insurance insurance = new Insurance(id, name, insuranceCode);
+				insList.add(insurance);
+			}
+
+		} catch (Exception e) {
+
+		} finally {
+
+			try {
+				if (stmt != null)
+					conn.close();
+			} catch (SQLException se) {
+			}
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+
+		return insList;
+	}
+
+	@Override
+	public void update(Insurance insurance) {
+		try {
+
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			stmt = conn.createStatement();
+
+			String sql = "UPDATE insurance " + "SET name = '" + insurance.getName() + "',insurance_code = '" + insurance.getInsuranceCode() + "' WHERE id = '" + insurance.getId() + "'";
+					
+			stmt.executeUpdate(sql);
+
+			stmt.close();
+			conn.close();
+
+		} catch (Exception e) {
+
+		}
+		
+	}
+
+	@Override
+	public void remove(int id) {
+		Connection conn = null;
+		Statement stmt = null;
+		System.out.println("re imp" + id);
+		try {
+
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			stmt = conn.createStatement();
+
+			String sql = "DELETE FROM drug_has_insurance " + "WHERE Insurance_id = '" + id + "'";
+			stmt.executeUpdate(sql);
+			
+			String sql1 = "DELETE FROM insurance " + "WHERE id = '" + id + "'";
+			stmt.executeUpdate(sql1);
+
+			stmt.close();
+			conn.close();
+
+		} catch (Exception e) {
+
+		}
+		
 	}
 
 }

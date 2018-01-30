@@ -5,8 +5,13 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
+
+import ir.maktab.pharmacy.drugInsuranceModel.DrugInsurance;
+import ir.maktab.pharmacy.drugPrescriptionModel.DrugPrescription;
+import ir.maktab.pharmacy.prescriptionModel.Prescription;
 
 public class DrugPrescriptionDAOImp implements DrugPerscriptionDAO {
 
@@ -35,7 +40,7 @@ public class DrugPrescriptionDAOImp implements DrugPerscriptionDAO {
 	public void addDrupPrescription(int drugId, int prescriptionID, int count, double payment) {
 
 		String selectSQL = "SELECT Drug_id,Prescription_id FROM drug_has_prescription WHERE Drug_id='" + drugId
-				+ "' or Prescription_id= '" + prescriptionID + "'";
+				+ "' and Prescription_id= '" + prescriptionID + "'";
 		ResultSet rs;
 		try {
 			rs = stmt.executeQuery(selectSQL);
@@ -47,10 +52,10 @@ public class DrugPrescriptionDAOImp implements DrugPerscriptionDAO {
 				int dId = rs.getInt("Drug_id");
 				int pId = rs.getInt("Prescription_id");
 
-				String name = rs.getString("patient_name");
+				//String name = rs.getString("patient_name");
 				if (drugId == dId || prescriptionID == pId) {
-					System.out.println("Exist this patient");
-					JOptionPane.showMessageDialog(null, "Exist this patient \n" + "patient ID : " + drugId, "Warning",
+					System.out.println("Exist this drug");
+					JOptionPane.showMessageDialog(null, "Exist this drug \n" + "patient ID : " + drugId, "Warning",
 							JOptionPane.WARNING_MESSAGE);
 
 					return;
@@ -58,10 +63,8 @@ public class DrugPrescriptionDAOImp implements DrugPerscriptionDAO {
 			}
 
 			if (drugId == 0) {
-				// sql = "INSERT INTO drug (name, stock,expire_date,price) " + "VALUES('" +
-				// drug.getName() + "','"
-				// + drug.getStock() + "','" + drug.getExpireDate() + "','" + drug.getPrice() +
-				// "')";
+				sql = "INSERT INTO drug_has_prescription (Prescription_id,count,payment) " + "VALUES('" + prescriptionID
+						+ "','" + count + "','" + payment + "')";
 			} else {
 
 				sql = "INSERT INTO drug_has_prescription (Drug_id,Prescription_id,count,payment) " + "VALUES('" + drugId
@@ -79,6 +82,25 @@ public class DrugPrescriptionDAOImp implements DrugPerscriptionDAO {
 	public double getPayment(int drugId, int prescriptionID) {
 
 		return 0;
+	}
+	
+	public ArrayList<DrugPrescription> getDrug(int dID, int pID) throws SQLException {
+		
+		String selectSQL = "SELECT Drug_id,Prescription_id,count,payment FROM drug_has_prescription WHERE Prescription_id='" + pID
+				+ "'";
+		ResultSet rs;
+		ArrayList<DrugPrescription> dpList = new ArrayList<>();
+			rs = stmt.executeQuery(selectSQL);
+			int dId =0;
+			while (rs.next()) {
+				 int drugId = rs.getInt("Drug_id");
+				 int prescID = rs.getInt("Prescription_id");
+				 int count = rs.getInt("count");
+				 double payment = rs.getDouble("payment");
+				 DrugPrescription dPres = new DrugPrescription(drugId, prescID, count, payment);
+				 dpList.add(dPres);
+			}
+			return dpList;
 	}
 
 }

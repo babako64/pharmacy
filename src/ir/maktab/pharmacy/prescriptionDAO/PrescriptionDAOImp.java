@@ -36,43 +36,53 @@ public class PrescriptionDAOImp implements prescriptionDAO{
 	}
 	
 	@Override
-	public void addPrescription(Prescription prescription) {
+	public int addPrescription(Prescription prescription) {
 		
-		String selectSQL = "SELECT id FROM prescription WHERE id='" + prescription.getId();
-ResultSet rs;
+	//	String selectSQL = "SELECT id FROM prescription WHERE id='" + prescription.getId();
+	//	ResultSet rs;
+		int pId = 0;
 try {
-	rs = stmt.executeQuery(selectSQL);
+//	rs = stmt.executeQuery(selectSQL);
 
 	String sql = null;
-
-	while (rs.next()) {
-
-		int pId = rs.getInt("id");
-		if (prescription.getId() == pId ) {
-			System.out.println("Exist this patient");
-			JOptionPane.showMessageDialog(null, "Exist this patient \n" + "patient ID : " + prescription.getId(), "Warning",
-					JOptionPane.WARNING_MESSAGE);
-			
-			return;
-		}
-	}
+	
+//	while (rs.next()) {
+//
+//		int pId = rs.getInt("id");
+//		if (prescription.getId() == pId ) {
+//			System.out.println("Exist this patient");
+//			JOptionPane.showMessageDialog(null, "Exist this patient \n" + "patient ID : " + prescription.getId(), "Warning",
+//					JOptionPane.WARNING_MESSAGE);
+//			
+//			return;
+//		}
+//	}
 
 	if (prescription.getId() == 0) {
-		// sql = "INSERT INTO drug (name, stock,expire_date,price) " + "VALUES('" +
-		// drug.getName() + "','"
-		// + drug.getStock() + "','" + drug.getExpireDate() + "','" + drug.getPrice() +
-		// "')";
+		sql = "INSERT INTO prescription (doctor_name,referral_date,Patient_id) " + "VALUES('" + prescription.getDoctorName()
+		+ "','" + prescription.getReferralDate() + "','" + prescription.getPatientId() + "')";
 	} else {
 
-		sql = "INSERT INTO prescription (id,doctor_name,referral_date,Patient_id) " + "VALUES('" + prescription.getId()
+		sql = "INSERT INTO prescription (doctor_name,referral_date,Patient_id) " + "VALUES('" + prescription.getId()
 				+ "','" + prescription.getDoctorName() + "','" + prescription.getReferralDate() + "','" + prescription.getPatientId() + "')";
 	}
 	stmt.executeUpdate(sql);
+	
+	String selectSQL2 = "SELECT id FROM prescription WHERE referral_date='" + prescription.getReferralDate() + "' and Patient_id= '" + prescription.getPatientId() + "'";
+	ResultSet rs2;
+	
+	
+	rs2 = stmt.executeQuery(selectSQL2);
+	while(rs2.next()){
+		pId = rs2.getInt("id");
+	}
 
 } catch (SQLException e) {
 	// TODO Auto-generated catch block
 	e.printStackTrace();
 }
+
+	return pId;
 	}
 
 	@Override
@@ -108,6 +118,7 @@ try {
 		
 		return null;
 	}
+	
 	public void close() {
 
 		try {

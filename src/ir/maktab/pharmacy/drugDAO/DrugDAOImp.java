@@ -192,6 +192,26 @@ public class DrugDAOImp implements DrugDAO{
 		return drug;
 	}
 
+	public String getDrugByID(int id) throws SQLException, ClassNotFoundException {
+		
+		Class.forName(JDBC_DRIVER);
+
+		conn = DriverManager.getConnection(DB_URL, USER, PASS);
+		stmt = conn.createStatement();
+
+		String sql = "SELECT * FROM drug WHERE drug.id='" + id + "'";
+
+		ResultSet rs = stmt.executeQuery(sql);
+		String name = null;
+		while (rs.next()) {
+
+			name = rs.getString("name");
+			
+		}
+		
+		return name;
+	}
+	
 	@Override
 	public void updatePrice(int id, double price) {
 		
@@ -242,6 +262,58 @@ public class DrugDAOImp implements DrugDAO{
 			int stock = i - count;
 			
 			String sql = "UPDATE drug " + "SET stock = '" + stock + "' WHERE id = '" + id + "'";
+					
+			stmt.executeUpdate(sql);
+
+			stmt.close();
+			conn.close();
+
+		} catch (Exception e) {
+
+		}
+	}
+
+	@Override
+	public void removeDrugByName(String name) {
+		
+		
+	}
+
+	@Override
+	public void removeDrugById(int id) {
+		Connection conn = null;
+		Statement stmt = null;
+
+		try {
+
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			stmt = conn.createStatement();
+
+			String sql = "DELETE FROM drug " + "WHERE id = '" + id + "'";
+			stmt.executeUpdate(sql);
+
+			stmt.close();
+			conn.close();
+
+		} catch (Exception e) {
+
+		}
+		
+	}
+
+	@Override
+	public void updateDrug(Drug drug) {
+		
+		try {
+
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			stmt = conn.createStatement();
+
+			String sql = "UPDATE drug " + "SET name = '" + drug.getName() + "',stock = '" + drug.getStock() + "',expire_date = '" + drug.getExpireDate() + "',price = '" + drug.getPrice() + "' WHERE id = '" + drug.getId() + "'";
 					
 			stmt.executeUpdate(sql);
 

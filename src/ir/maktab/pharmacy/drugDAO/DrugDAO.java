@@ -12,5 +12,7 @@ public interface DrugDAO {
 	public void updatePrice(int id, double price);
 	public int getCount();
 	public void updateStock(int id, int count);
-	
+	public void updateDrug(Drug drug);
+	public void removeDrugByName(String name);
+	public void removeDrugById(int id);
 }

@@ -66,14 +66,12 @@ public class UserDAOImp implements UserDAO{
 			}
 
 			if (id == 0) {
-				// sql = "INSERT INTO drug (name, stock,expire_date,price) " + "VALUES('" +
-				// drug.getName() + "','"
-				// + drug.getStock() + "','" + drug.getExpireDate() + "','" + drug.getPrice() +
-				// "')";
+				sql = "INSERT INTO user (first_name,last_name,position,username,password) " + "VALUES('" + user.getfName()
+				+ "','" + user.getlName() + "','" + user.getPosition() + "','" + user.getPassword() +"','" + user.getUsername() +"')";
 			} else {
 
-				sql = "INSERT INTO user (id,first_name,last_name,position,password,usename) " + "VALUES('" + user.getId()
-						+ "','" + user.getfName() + "','" + user.getlName() + "','" + user.getPosition() + "','" + user.getPassword() +"','" + user.getUsername() +"')";
+				sql = "INSERT INTO user (first_name,last_name,position,username,password) " + "VALUES('" + user.getfName()
+						+ "','" + user.getlName() + "','" + user.getPosition() + "','" + user.getPassword() +"','" + user.getUsername() +"')";
 			}
 			stmt.executeUpdate(sql);
 
@@ -113,8 +111,9 @@ public class UserDAOImp implements UserDAO{
 				firstName = rs.getString("first_name");
 				lastName = rs.getString("last_name");
 				position = rs.getString("position");
-				pass = rs.getString("password");
 				uname = rs.getString("username");
+				pass = rs.getString("password");
+				
 				
 				if (username.equals(uname) && password.equals(pass)) {
 
