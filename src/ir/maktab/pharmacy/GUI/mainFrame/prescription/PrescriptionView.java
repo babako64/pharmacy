@@ -143,26 +143,28 @@ public class PrescriptionView extends JFrame{
 	
 	public void addDrug(String drugName, int prescriptionID, int count, double payment) throws ClassNotFoundException, SQLException {
 		
-		System.out.println(drugName);
+		//System.out.println(drugName);
 		
 		DrugPrescriptionDAOImp dPrescrip = new DrugPrescriptionDAOImp();
 		
 		Drug  drug = new DrugDAOImp().getDrug(drugName);
 		
 		double newPayment=0;
-		System.out.println(payment);
+		//System.out.println(payment);
+		if(count <= drug.getStock() ) {
 		if(payment == 0) {
 		DrugInsuranceDAOImp dInsu = new DrugInsuranceDAOImp();
 		int share =  dInsu.getShare(drug.getId(), insuranceId);
-		System.out.println(drug.getPrice() +" " + count + " " + share);
+		//System.out.println(drug.getPrice() +" " + count + " " + share);
 		double price = drug.getPrice();
 			double p = price;
 			price = price * (double)count;
 			price = price * (double)share;
 			price = price / (double)100;
-			System.out.println(price);
+		//	System.out.println(price);
 			newPayment = (p * (double)count) - price;
-			System.out.println(newPayment);
+		//	System.out.println(newPayment);
+		}
 		}
 		
 		dPrescrip.addDrupPrescription(drug.getId(), prescriptionID, count, newPayment);

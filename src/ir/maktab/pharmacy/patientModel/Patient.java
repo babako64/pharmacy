@@ -6,8 +6,8 @@ public class Patient {
 	private String pationtName;
 	private int insuranceNumber;
 	private int insuranceID;
-	
-	public Patient(int id, String pationtName, int insuranceNumber,int insuranceID) {
+
+	public Patient(int id, String pationtName, int insuranceNumber, int insuranceID) {
 		super();
 		this.id = id;
 		this.pationtName = pationtName;
@@ -46,6 +46,5 @@ public class Patient {
 	public void setInsuranceID(int insuranceID) {
 		this.insuranceID = insuranceID;
 	}
-	
-	
+
 }

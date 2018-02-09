@@ -4,29 +4,43 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
-public class patientController implements ActionListener{
+import javax.swing.JOptionPane;
+
+import ir.maktab.pharmacy.GUI.mainFrame.MainFrameView;
+
+public class patientController implements ActionListener {
 
 	patientView jf;
-	
+
 	public patientController(patientView jf) {
 		this.jf = jf;
 	}
-	
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
-		
-		if(e.getSource() == jf.getLoadbtn()) {
-			
-			//jf.getDrug(jf.getNameTf().getText());
-			
-		}
-		
-		if(e.getSource() == jf.getRemovebtn()) {
-			
+
+		if (e.getSource() == jf.getLoadbtn()) {
+
 			try {
-				jf.remove(jf.NameSelectedRow);
+				jf.getPatient(jf.getNameTf().getText());
+			} catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+		}
+
+		if (e.getSource() == jf.getRemovebtn()) {
+
+			try {
+				if (MainFrameView.userCheck) {
+					jf.remove(jf.NameSelectedRow);
+				} else {
+					JOptionPane.showMessageDialog(null, "Access denied \n", "Warning", JOptionPane.WARNING_MESSAGE);
+				}
 			} catch (ClassNotFoundException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -35,12 +49,12 @@ public class patientController implements ActionListener{
 				e1.printStackTrace();
 			}
 		}
-		
-		if(e.getSource() == jf.getAddbtn()) {
-			
+
+		if (e.getSource() == jf.getAddbtn()) {
+
 			try {
-				jf.addPatient(jf.getNameTf().getText(), Integer.parseInt(jf.getInsureNumberTf().getText()), jf.insuranceName,
-						jf.getDoctorNameTf().getText(), jf.getReferralDateTf().getText());
+				jf.addPatient(jf.getNameTf().getText(), Integer.parseInt(jf.getInsureNumberTf().getText()),
+						jf.insuranceName, jf.getDoctorNameTf().getText(), jf.getReferralDateTf().getText());
 			} catch (NumberFormatException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -52,25 +66,22 @@ public class patientController implements ActionListener{
 				e1.printStackTrace();
 			}
 		}
-		
-		if(e.getSource() == jf.getButtonUpdate()) {
-			
-//			if (jf.getNameTf().getText().equals("") || jf.getStockTf().getText().equals("")
-//					|| jf.getExpireTf().getText().equals("")) {
-//				System.out.println("upd");
-//				jf.update(jf.IdSelectedRow, jf.NameSelectedRow, jf.StocktSelectedRow, jf.ExpireDateSelectedRow, jf.PricaSelectedRow);
-//
-//			} else {
-//				jf.update(Integer.parseInt(jf.getIdTf().getText()), jf.getNameTf().getText(), Integer.parseInt(jf.getStockTf().getText()),
-//						jf.getExpireTf().getText(), Double.parseDouble(jf.getpriceTf().getText()));
-//						
-////				textField.setText("");
-////				textField_1.setText("");
-////				textField_2.setText("");
-////				textField_3.setText("");
-//			}
+
+		if (e.getSource() == jf.getButtonUpdate()) {
+
+			try {
+				jf.update(jf.IdSelectedRow, jf.NameSelectedRow, jf.InsurNumberSelectedRow, jf.InsurIdSelectedRow);
+			} catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+
 		}
-		
+
 	}
 
 }

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import ir.maktab.pharmacy.drugDAO.DrugDAOImp;
 import ir.maktab.pharmacy.drugInsuranceModel.DrugInsurance;
 import ir.maktab.pharmacy.drugPrescriptionModel.DrugPrescription;
 import ir.maktab.pharmacy.prescriptionModel.Prescription;
@@ -39,6 +40,8 @@ public class DrugPrescriptionDAOImp implements DrugPerscriptionDAO {
 	@Override
 	public void addDrupPrescription(int drugId, int prescriptionID, int count, double payment) {
 
+		new DrugDAOImp().updateStock(drugId, count);
+
 		String selectSQL = "SELECT Drug_id,Prescription_id FROM drug_has_prescription WHERE Drug_id='" + drugId
 				+ "' and Prescription_id= '" + prescriptionID + "'";
 		ResultSet rs;
@@ -52,7 +55,7 @@ public class DrugPrescriptionDAOImp implements DrugPerscriptionDAO {
 				int dId = rs.getInt("Drug_id");
 				int pId = rs.getInt("Prescription_id");
 
-				//String name = rs.getString("patient_name");
+				// String name = rs.getString("patient_name");
 				if (drugId == dId || prescriptionID == pId) {
 					System.out.println("Exist this drug");
 					JOptionPane.showMessageDialog(null, "Exist this drug \n" + "patient ID : " + drugId, "Warning",
@@ -83,24 +86,39 @@ public class DrugPrescriptionDAOImp implements DrugPerscriptionDAO {
 
 		return 0;
 	}
-	
+
 	public ArrayList<DrugPrescription> getDrug(int dID, int pID) throws SQLException {
-		
-		String selectSQL = "SELECT Drug_id,Prescription_id,count,payment FROM drug_has_prescription WHERE Prescription_id='" + pID
-				+ "'";
+
+		String selectSQL = "SELECT Drug_id,Prescription_id,count,payment FROM drug_has_prescription WHERE Prescription_id='"
+				+ pID + "'";
 		ResultSet rs;
 		ArrayList<DrugPrescription> dpList = new ArrayList<>();
-			rs = stmt.executeQuery(selectSQL);
-			int dId =0;
-			while (rs.next()) {
-				 int drugId = rs.getInt("Drug_id");
-				 int prescID = rs.getInt("Prescription_id");
-				 int count = rs.getInt("count");
-				 double payment = rs.getDouble("payment");
-				 DrugPrescription dPres = new DrugPrescription(drugId, prescID, count, payment);
-				 dpList.add(dPres);
-			}
-			return dpList;
+		rs = stmt.executeQuery(selectSQL);
+		int dId = 0;
+		while (rs.next()) {
+			int drugId = rs.getInt("Drug_id");
+			int prescID = rs.getInt("Prescription_id");
+			int count = rs.getInt("count");
+			double payment = rs.getDouble("payment");
+			DrugPrescription dPres = new DrugPrescription(drugId, prescID, count, payment);
+			dpList.add(dPres);
+		}
+		return dpList;
+	}
+
+	public void removePerscription(int drugId) {
+
+		try {
+
+			String sql = "DELETE FROM drug_has_prescription " + "WHERE Drug_id = '" + drugId + "'";
+			stmt.executeUpdate(sql);
+
+			stmt.close();
+			conn.close();
+
+		} catch (Exception e) {
+
+		}
 	}
 
 }

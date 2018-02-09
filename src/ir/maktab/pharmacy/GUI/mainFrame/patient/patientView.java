@@ -29,36 +29,35 @@ import java.util.ArrayList;
 
 import javax.swing.JComboBox;
 
-public class patientView extends JPanel{
-	
-	
-	
+public class patientView extends JPanel {
+
 	private JTable table;
 	DefaultTableModel tableModel;
-	
-	 int IdSelectedRow;
-	 String NameSelectedRow;
-	 int  InsurNumberSelectedRow;
-	 int  InsurIdSelectedRow;
-	 
-	 String insuranceName;
+
+	int IdSelectedRow;
+	String NameSelectedRow;
+	int InsurNumberSelectedRow;
+	int InsurIdSelectedRow;
+
+	String insuranceName;
 	private JTextField textField_1;
 	private JTextField textField_2;
-	
+
 	JButton btnAdd;
 	JButton btnLoad;
 	JButton btnRemove;
 	JButton btnUpdate;
+
 	private JTextField textField_3;
 	private JTextField textField_4;
-	
+
 	public patientView() throws ClassNotFoundException, SQLException {
 		setBackground(Color.LIGHT_GRAY);
 		setLayout(null);
-		String patients[][] = getPatient();
-		String column[] = { "ID", "NAME", "INSURANCE NUMBER", "INSURANCE ID"};
+		String patients[][] = getPatients();
+		String column[] = { "ID", "NAME", "INSURANCE NUMBER", "INSURANCE ID" };
 		tableModel = new DefaultTableModel(patients, column);
-		table = new JTable(tableModel){
+		table = new JTable(tableModel) {
 			public Component prepareRenderer(TableCellRenderer renderer, int Index_row, int Index_col) {
 				Component comp = super.prepareRenderer(renderer, Index_row, Index_col);
 
@@ -79,90 +78,89 @@ public class patientView extends JPanel{
 				return comp;
 			}
 		};
-	//	table.setBounds(277, 29, 590, 424);
+		// table.setBounds(277, 29, 590, 424);
 		table.setRowSelectionAllowed(true);
 		JScrollPane sp = new JScrollPane(table);
 		sp.setBounds(265, 172, 650, 357);
 		add(sp);
-		
+
 		textField_1 = new JTextField();
 		textField_1.setBounds(109, 37, 140, 26);
 		add(textField_1);
 		textField_1.setColumns(10);
-		
+
 		textField_2 = new JTextField();
 		textField_2.setColumns(10);
 		textField_2.setBounds(441, 37, 140, 26);
 		add(textField_2);
-		
-		
-	    btnAdd = new JButton("Add");
+
+		btnAdd = new JButton("Add");
 		btnAdd.setBounds(22, 221, 89, 23);
 		btnAdd.addActionListener(new patientController(this));
 		add(btnAdd);
-		
-		 btnLoad = new JButton("Load");
+
+		btnLoad = new JButton("Load");
 		btnLoad.setBounds(124, 221, 89, 23);
 		btnLoad.addActionListener(new patientController(this));
 		add(btnLoad);
-		
+
 		btnRemove = new JButton("Remove");
 		btnRemove.setBounds(22, 272, 89, 23);
 		btnRemove.addActionListener(new patientController(this));
 		add(btnRemove);
-		
+
 		btnUpdate = new JButton("Update");
 		btnUpdate.setBounds(124, 272, 89, 23);
 		btnUpdate.addActionListener(new patientController(this));
 		add(btnUpdate);
-		
+
 		JLabel lblName = new JLabel("Name");
 		lblName.setBounds(53, 43, 46, 14);
 		add(lblName);
-		
+
 		JLabel lblInsureCode = new JLabel("insurance number");
 		lblInsureCode.setBounds(298, 43, 85, 14);
 		add(lblInsureCode);
-		
+
 		JLabel lblInsurance = new JLabel("insurance");
 		lblInsurance.setBounds(670, 43, 46, 14);
 		add(lblInsurance);
-		
+
 		String[] description = getInsuranse();
 		JComboBox comboBox = new JComboBox();
 		comboBox.setBounds(743, 40, 140, 20);
 		int count = 0;
-		 for (int i = 0; i < description.length; i++)
-			 comboBox.addItem(description[count++]);
-		 
-		 comboBox.addActionListener(new ActionListener() {
-		      public void actionPerformed(ActionEvent e) {
-		        
-		        insuranceName = (String) (((JComboBox)e.getSource()).getSelectedItem());
-		      }
-		    });
+		for (int i = 0; i < description.length; i++)
+			comboBox.addItem(description[count++]);
+
+		comboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				insuranceName = (String) (((JComboBox) e.getSource()).getSelectedItem());
+			}
+		});
 		add(comboBox);
-		
+
 		JLabel lblDoctorName = new JLabel("doctor name");
 		lblDoctorName.setBounds(39, 96, 60, 14);
 		add(lblDoctorName);
-		
+
 		textField_3 = new JTextField();
 		textField_3.setColumns(10);
 		textField_3.setBounds(109, 90, 140, 26);
 		add(textField_3);
-		
+
 		JLabel lblReferralDate = new JLabel("referral date");
 		lblReferralDate.setBounds(298, 96, 68, 14);
 		add(lblReferralDate);
-		
+
 		textField_4 = new JTextField();
 		textField_4.setColumns(10);
 		textField_4.setBounds(441, 90, 140, 26);
 		add(textField_4);
 	}
-	
-	public String[][] getPatient() throws ClassNotFoundException, SQLException{
+
+	public String[][] getPatients() throws ClassNotFoundException, SQLException {
 
 		PatientDAOImp patientDAO = new PatientDAOImp();
 		ArrayList<Patient> pList = patientDAO.getAll();
@@ -174,52 +172,53 @@ public class patientView extends JPanel{
 			list[i][1] = patient.getPationtName();
 			list[i][2] = Integer.toString(patient.getInsuranceNumber());
 			list[i][3] = Integer.toString(patient.getInsuranceID());
-			
+
 		}
 
 		return list;
-		
+
 	}
-	
+
 	public void refresh() throws ClassNotFoundException, SQLException {
 
 		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
-		String column[] = { "ID", "NAME", "INSURANCE NUMBER", "INSURANCE ID"};
-		tableModel.setDataVector(getPatient(), column);
+		String column[] = { "ID", "NAME", "INSURANCE NUMBER", "INSURANCE ID" };
+		tableModel.setDataVector(getPatients(), column);
 		table.setModel(tableModel);
 
 	}
-	
-	public void addPatient(String name, int insurNumber, String insurName, String docName, String referralDate) throws ClassNotFoundException, SQLException {
-		
+
+	public void addPatient(String name, int insurNumber, String insurName, String docName, String referralDate)
+			throws ClassNotFoundException, SQLException {
+
 		int insurID = new DrugInsuranceDAOImp().getInsuId(insurName);
 		PatientDAOImp paientDAO = new PatientDAOImp();
 		Patient patient = new Patient(0, name, insurNumber, insurID);
-		int pId=0;
-		if(paientDAO.checkPatient(patient)) {
+		int pId = 0;
+		if (paientDAO.checkPatient(patient)) {
 			pId = paientDAO.getPatientId(patient.getPationtName(), insurNumber);
 			addPrescription(docName, referralDate, pId, insurID);
-			
-		}else {
-			
-			 pId = paientDAO.addPatient(patient);
-			 addPrescription(docName, referralDate, pId, insurID);
-			
+
+		} else {
+
+			pId = paientDAO.addPatient(patient);
+			addPrescription(docName, referralDate, pId, insurID);
+
 		}
-		
-		
+
 	}
-	
-	public void addPrescription(String doctorName, String referralDate, int pationtId,int insurID) throws ClassNotFoundException, SQLException {
-		
+
+	public void addPrescription(String doctorName, String referralDate, int pationtId, int insurID)
+			throws ClassNotFoundException, SQLException {
+
 		Prescription prescrip = new Prescription(0, doctorName, referralDate, pationtId);
 		int id = new PrescriptionDAOImp().addPrescription(prescrip);
 		getParent();
 		new PrescriptionView(id, insurID);
 	}
-	
+
 	public String[] getInsuranse() {
-		
+
 		InsuranceDAOImp insu = new InsuranceDAOImp();
 		ArrayList<Insurance> insuList = new ArrayList<>();
 		insuList = insu.getall();
@@ -228,53 +227,91 @@ public class patientView extends JPanel{
 		for (int i = 0; i < insuList.size(); i++) {
 			insurance = insuList.get(i);
 			list[i] = insurance.getName();
-			
+
 		}
-		
+
 		return list;
 	}
-	
+
 	public void remove(String name) throws ClassNotFoundException, SQLException {
-		 new PatientDAOImp().remove(name);
-		 new PatientDAOImp().remove2(name);
-		 refresh();
+		new PatientDAOImp().remove(name);
+		new PatientDAOImp().remove2(name);
+		refresh();
 	}
-	
-	
+
+	public void update(int id, String name, int insuranceNumber, int insuranceID)
+			throws ClassNotFoundException, SQLException {
+
+		Patient patient = new Patient(id, name, insuranceNumber, insuranceID);
+		new PatientDAOImp().update(patient);
+	}
+
+	public void getPatient(String name) throws ClassNotFoundException, SQLException {
+
+		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+		String column[] = { "ID", "NAME", "INSURANCE NUMBER", "INSURANCE ID" };
+		tableModel.setDataVector(findpatient(name), column);
+		table.setModel(tableModel);
+
+	}
+
+	public String[][] findpatient(String name) throws ClassNotFoundException, SQLException {
+
+		PatientDAOImp patientDAO = new PatientDAOImp();
+		ArrayList<Patient> patientList = new ArrayList<>();
+		patientList.add(patientDAO.getPatientByName(name));
+		String[][] list = new String[patientList.size()][5];
+		Patient patient = null;
+		for (int i = 0; i < patientList.size(); i++) {
+			patient = patientList.get(i);
+			list[i][0] = Integer.toString(patient.getId());
+			list[i][1] = patient.getPationtName();
+			list[i][2] = Integer.toString(patient.getInsuranceNumber());
+			list[i][3] = Integer.toString(patient.getInsuranceID());
+
+		}
+
+		return list;
+
+	}
+
 	public JButton getAddbtn() {
-		
+
 		return btnAdd;
 	}
+
 	public JButton getLoadbtn() {
-	
-	return btnLoad;
+
+		return btnLoad;
 	}
+
 	public JButton getRemovebtn() {
-		
+
 		return btnRemove;
-		}
+	}
+
 	public JButton getButtonUpdate() {
-		
+
 		return btnUpdate;
 	}
-	
+
 	public JTextField getNameTf() {
-		
+
 		return textField_1;
 	}
-	
+
 	public JTextField getInsureNumberTf() {
-		
+
 		return textField_2;
 	}
-	
+
 	public JTextField getDoctorNameTf() {
-		
+
 		return textField_3;
 	}
-	
+
 	public JTextField getReferralDateTf() {
-		
+
 		return textField_4;
 	}
 }

@@ -6,5 +6,5 @@ public interface UserDAO {
 
 	public void addUser(User user);
 	public User getUserById(int id);
-	public boolean checkPassword(String userName, String password);
+	public User checkPassword(String userName, String password);
 }

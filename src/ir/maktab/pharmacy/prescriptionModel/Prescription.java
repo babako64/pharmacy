@@ -6,7 +6,7 @@ public class Prescription {
 	private String doctorName;
 	private String referralDate;
 	private int patientId;
-	
+
 	public Prescription(int id, String doctorName, String referralDate, int patientId) {
 		this.id = id;
 		this.doctorName = doctorName;
@@ -45,6 +45,5 @@ public class Prescription {
 	public void setPatientId(int patientId) {
 		this.patientId = patientId;
 	}
-	
-	
+
 }
